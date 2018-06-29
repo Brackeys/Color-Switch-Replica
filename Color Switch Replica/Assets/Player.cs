@@ -1,71 +1,70 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : MonoBehaviour {
+namespace ColorSwitchReplica {
 
-	public float jumpForce = 10f;
+    public class Player : MonoBehaviour {
 
-	public Rigidbody2D rb;
-	public SpriteRenderer sr;
+	    public float jumpForce = 10f;
+	    public Rigidbody2D rigidBody2D;
+	    public SpriteRenderer spriteRenderer;
+	    public string currentColorInTheCircle;
+        public Color colorPink, colorAzul;
 
-	public string currentColor;
-
-	public Color colorCyan;
-	public Color colorYellow;
-	public Color colorMagenta;
-	public Color colorPink;
-
-	void Start ()
-	{
-		SetRandomColor();
-	}
+        void Start ()
+	    {
+		    SetRandomColor();
+	    }
 	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetButtonDown("Jump") || Input.GetMouseButtonDown(0))
-		{
-			rb.velocity = Vector2.up * jumpForce;
-		}
-	}
+	    // Update is called once per frame
+	    void Update () {
+		    if (Input.GetButtonDown("Jump") || Input.GetMouseButtonDown(0))
+		    {
+			    rigidBody2D.velocity = Vector2.up * jumpForce;
+		    }
+	    }
 
-	void OnTriggerEnter2D (Collider2D col)
-	{
-		if (col.tag == "ColorChanger")
-		{
-			SetRandomColor();
-			Destroy(col.gameObject);
-			return;
-		}
+	    void OnTriggerEnter2D (Collider2D collider2D)
+	    {
+		    if (collider2D.tag == "ColorChanger")
+		    {
+			    SetRandomColor();
+			    Destroy(collider2D.gameObject);
+			    return;
+		    }
 
-		if (col.tag != currentColor)
-		{
-			Debug.Log("GAME OVER!");
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-		}
-	}
+		    if (collider2D.tag != currentColorInTheCircle)
+		    {
+			    Debug.Log("GAME OVER!");
+			    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		    }
+	    }
 
-	void SetRandomColor ()
-	{
-		int index = Random.Range(0, 4);
+	    void SetRandomColor ()
+	    {
+		    int colorsType = Random.Range(0, 4);
 
-		switch (index)
-		{
-			case 0:
-				currentColor = "Cyan";
-				sr.color = colorCyan;
-				break;
-			case 1:
-				currentColor = "Yellow";
-				sr.color = colorYellow;
-				break;
-			case 2:
-				currentColor = "Magenta";
-				sr.color = colorMagenta;
-				break;
-			case 3:
-				currentColor = "Pink";
-				sr.color = colorPink;
-				break;
-		}
-	}
+		    switch (colorsType)
+		    {
+			    case 0:
+				    currentColorInTheCircle = "Cyan";
+				    spriteRenderer.color = Color.cyan;
+				    break;
+			    case 1:
+				    currentColorInTheCircle = "Yellow";
+				    spriteRenderer.color = Color.yellow;
+				    break;
+			    case 2:
+				    currentColorInTheCircle = "Magenta";
+				    spriteRenderer.color = Color.magenta;
+				    break;
+			    case 3:
+				    currentColorInTheCircle = "Pink";
+				    spriteRenderer.color = colorPink;
+				    break;
+                default:
+                    throw new System.NotImplementedException();
+            }
+	    }
+    }
 }
